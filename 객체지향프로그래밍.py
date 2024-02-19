@@ -328,3 +328,21 @@ print(p2.name, p2.age, p2.address)
 # str(객체) -> __str__()호출
 print(str(p))
 print(p) # print(값) -> 값을 문자열로 변환한 뒤 출력, 변환시 str()
+
+# class 메소드/변수, static 메소드 호출
+class Calculator:
+    PI = 3.14 # 변수명을 대문자 (상수처럼 쓰는 값(불변의 값)), 클래스 변수
+    
+    @classmethod
+    def circle_area(clazz, radius):
+        return radius * radius * clazz.PI # 클래스 변수 호출
+    
+    @staticmethod
+    def square_area(width, height):
+        return width * height
+    
+# 클래스 변수 호출 : 클래스 이름. 변수명
+print(Calculator.PI)
+print(Calculator.circle_area(5))
+print(Calculator.square_area(10,5))
+print(Calculator.mro())
