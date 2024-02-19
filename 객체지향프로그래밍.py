@@ -252,3 +252,79 @@ class C(B_1, B_2):
 
 print(C.mro())
 # [<class '__main__.C'>, <class '__main__.B_1'>, <class '__main__.A_1'>, <class '__main__.A_2'>, <class '__main__.B_2'>, <class 'object'>]
+
+class Person:
+    def __init__(self, name, age, address = None):
+        self.name = name
+        self.age = age
+        self.address = address
+        
+    @property
+    def name(self):
+        return  self.__name
+    
+    @name.setter
+    def name(self, name):
+        if len(name) >= 2:
+            self.__name = name
+            
+    @property
+    def age(self):
+        return self.__age
+    
+    @age.setter
+    def age(self, age):
+        if age >= 10:
+            self.__age = age
+    
+    # 나이값을 더하는 메소드
+    def add_age(self, age):
+        self.age = self.age + age
+    
+    # 특수메소드 정의
+    def __repr__(self):
+        return f'Person("{self.name}", {self.age}, "{self.address}")'
+    
+    def __str__(self):
+        return f"이름: {self.name}, 나이: {self.age}, 주소: {self.address}"
+    
+    # 연산자 재정의 특수메소드
+    # 덧셈
+    def __add__(self, other):
+        # other가 숫자이면 self.age에 더한다
+        # other가 다른 Person객체이면 그 객체의 age에 self의 age를 더한다
+        # p + 30 (self: p, other: 30)
+        if isinstance(other, (int, float)):
+            return self.age + other
+        elif isinstance(other, Person):
+            return self.age + other.age
+        
+    def __gt__(self, other):
+        # self객체와 other객체의 나이를 비교
+        if isinstance(other, Person):
+            return self.age > other.age
+        else:
+            raise TypeError(f"Person과 {type(other)}는 비교할 수 없습니다") # Exception을 발생시킨다            
+        
+p = Person("홍길동", 30, "서울")
+p2 = Person("이순신", 20, "부산")
+
+print(p + 10) # __add__(self, other): self: p, other: 10
+
+print(p + p2)
+
+print(p > p2)
+
+#print(p > 10) # Exception 발생
+
+result = repr(p)
+print(type(result))
+print(result)
+
+p2 = eval(result)
+print(type(p2))
+print(p2.name, p2.age, p2.address)
+
+# str(객체) -> __str__()호출
+print(str(p))
+print(p) # print(값) -> 값을 문자열로 변환한 뒤 출력, 변환시 str()
